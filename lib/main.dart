@@ -1,5 +1,5 @@
 import 'package:chat_app/screens/auth_screen.dart';
-import 'package:chat_app/screens/chat_screen.dart';
+// import 'package:chat_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -15,12 +15,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = ThemeData();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: _theme.copyWith(
+        colorScheme: _theme.colorScheme.copyWith(
+          primary: Colors.pink,
+          secondary: Colors.deepPurple,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
       ),
+
+      // backgroundColor: Colors.pink,
       home: const AuthScreen(),
     );
   }
