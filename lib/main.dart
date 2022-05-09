@@ -12,7 +12,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = ThemeData();
@@ -33,8 +32,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-
-      // backgroundColor: Colors.pink,
       home: const AuthScreen(),
     );
   }
