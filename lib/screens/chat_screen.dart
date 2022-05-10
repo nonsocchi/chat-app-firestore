@@ -1,3 +1,4 @@
+import 'package:chat_app/widgets/chat/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,12 @@ class ChatScreen extends StatelessWidget {
           DropdownButton(
               items: [
                 DropdownMenuItem(
-                  child: Container(
-                    child: Row(
-                      children: const [
-                        Icon(Icons.exit_to_app),
-                        SizedBox(width: 8),
-                        Text('Logout'),
-                      ],
-                    ),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.exit_to_app),
+                      SizedBox(width: 8),
+                      Text('Logout'),
+                    ],
                   ),
                   value: 'logout',
                 ),
@@ -40,25 +39,11 @@ class ChatScreen extends StatelessWidget {
               )),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: _firestore
-              .collection('chats/JZoNtTa3RaP2Qxqtd7Cj/messages')
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final documents = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: documents.length,
-              itemBuilder: (context, index) => Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(documents[index]['text']),
-              ),
-            );
-          }),
+      body: Column(
+        children: const [
+          Expanded(child: Messages()),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
