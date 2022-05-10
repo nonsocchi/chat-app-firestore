@@ -9,13 +9,17 @@ class Messages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('chat').snapshots(),
+      stream: _firestore
+          .collection('chat')
+          .orderBy('time', descending: true)
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
         final chatDocs = snapshot.data!.docs;
         return ListView.builder(
+          reverse: true,
           itemBuilder: (context, index) => Text(chatDocs[index]['text']),
           itemCount: chatDocs.length,
         );
