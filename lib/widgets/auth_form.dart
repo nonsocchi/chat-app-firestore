@@ -10,6 +10,7 @@ class AuthForm extends StatefulWidget {
     String username,
     String password,
     bool isLogin,
+    BuildContext ctx,
   ) submitFn;
 
   @override
@@ -34,6 +35,7 @@ class _AuthFormState extends State<AuthForm> {
         _userName.trim(),
         _userPassword.trim(),
         _isLogin,
+        context,
       );
       // after saving, use auth values to send request to Firebase
     }
@@ -65,30 +67,30 @@ class _AuthFormState extends State<AuthForm> {
                         const InputDecoration(labelText: 'Email address'),
                     onSaved: (value) => _userEmail = value!,
                   ),
-                  TextFormField(
-                    key: const ValueKey('username'),
-                    validator: (value) {
-                      if (value!.isEmpty || value.length < 4) {
-                        return 'Please enter at least 4 characters';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(labelText: 'Username'),
-                    onSaved: (value) => _userName = value!,
-                  ),
                   if (!_isLogin)
                     TextFormField(
-                      key: const ValueKey('password'),
+                      key: const ValueKey('username'),
                       validator: (value) {
-                        if (value!.isEmpty || value.length < 7) {
-                          return 'Password must be at least 7 characters long';
+                        if (value!.isEmpty || value.length < 4) {
+                          return 'Please enter at least 4 characters';
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(labelText: 'Password'),
-                      obscureText: true,
-                      onSaved: (value) => _userPassword = value!,
+                      decoration: const InputDecoration(labelText: 'Username'),
+                      onSaved: (value) => _userName = value!,
                     ),
+                  TextFormField(
+                    key: const ValueKey('password'),
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 7) {
+                        return 'Password must be at least 7 characters long';
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    onSaved: (value) => _userPassword = value!,
+                  ),
                   const SizedBox(height: 12),
                   if (widget.isLoading) const CircularProgressIndicator(),
                   if (!widget.isLoading)
