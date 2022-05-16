@@ -44,10 +44,16 @@ class _AuthScreenState extends State<AuthScreen> {
             email: email, password: password);
 
         // upload profile photo to Firebase Storage before adding a user
-        // final imageRef = _storage
-        //     .ref()
-        //     .child('user_images')
-        //     .child(authResult.user!.uid + '.jpg');
+        try {
+          final imageRef = _storage
+              .ref()
+              .child('user_images')
+              .child(authResult.user!.uid + '.jpg');
+
+          imageRef.putFile(image!);
+        } catch (error) {
+          print(error);
+        }
 
         // create a 'users' collection in Cloud Firestore collections.
         await FirebaseFirestore.instance
