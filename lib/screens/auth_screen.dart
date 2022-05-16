@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/widgets/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,11 +15,13 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
+  final _storage = FirebaseStorage.instance;
   bool _isLoading = false;
 
   void _submitAuthForm(
     String email,
     String username,
+    File? image,
     String password,
     bool isLogin,
     BuildContext ctx,
@@ -38,6 +43,12 @@ class _AuthScreenState extends State<AuthScreen> {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
+        // upload profile photo to Firebase Storage before adding a user
+        // final imageRef = _storage
+        //     .ref()
+        //     .child('user_images')
+        //     .child(authResult.user!.uid + '.jpg');
+
         // create a 'users' collection in Cloud Firestore collections.
         await FirebaseFirestore.instance
             .collection('users')
@@ -45,6 +56,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
           'username': username,
           'email': email,
+          // 'imageUrl': url,
         });
       }
     } on FirebaseAuthException catch (err) {
