@@ -44,25 +44,27 @@ class _AuthScreenState extends State<AuthScreen> {
             email: email, password: password);
 
         // upload profile photo to Firebase Storage before adding a user
-        try {
-          final imageRef = _storage
-              .ref()
-              .child('user_images')
-              .child(authResult.user!.uid + '.jpg');
 
-          imageRef.putFile(image!);
-        } catch (error) {
-          print(error);
-        }
+        // create 'usesr_images' folder on Firebase Storage if null
+        final imageRef = _storage
+            .ref()
+            .child('user_images')
+            .child(authResult.user!.uid + '.jpg');
 
-        // create a 'users' collection in Cloud Firestore collections.
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(authResult.user!.uid)
-            .set({
-          'username': username,
-          'email': email,
-          // 'imageUrl': url,
+        // upload image with userid as image name
+        imageRef.putFile(image!).whenComplete(() async {
+          // create pfp image url from Firebase
+          final url = await imageRef.getDownloadURL();
+
+          // create a 'users' collection in Cloud Firestore collections.
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(authResult.user!.uid)
+              .set({
+            'username': username,
+            'email': email,
+            'imageUrl': url,
+          });
         });
       }
     } on FirebaseAuthException catch (err) {
