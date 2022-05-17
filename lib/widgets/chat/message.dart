@@ -28,6 +28,7 @@ class Messages extends StatelessWidget {
           itemBuilder: (context, index) => MessageBubble(
             message: (chatDocs[index].data() as dynamic)['text'],
             userName: (chatDocs[index].data() as dynamic)['username'],
+            userImage: (chatDocs[index].data() as dynamic)['userImage'],
             isMe: (chatDocs[index].data() as dynamic)['userId'] == user.uid,
           ),
           itemCount: chatDocs.length,
