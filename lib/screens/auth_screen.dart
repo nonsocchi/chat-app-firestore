@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/widgets/auth/auth_form.dart';
@@ -56,6 +57,9 @@ class _AuthScreenState extends State<AuthScreen> {
           // create pfp image url from Firebase
           final url = await imageRef.getDownloadURL();
 
+          // get Firebase Cloud Messaging Token
+          final fcmToken = await FirebaseMessaging.instance.getToken();
+
           // create a 'users' collection in Cloud Firestore collections.
           await FirebaseFirestore.instance
               .collection('users')
@@ -64,6 +68,7 @@ class _AuthScreenState extends State<AuthScreen> {
             'username': username,
             'email': email,
             'imageUrl': url,
+            'fcmtoken': fcmToken,
           });
         });
       }
