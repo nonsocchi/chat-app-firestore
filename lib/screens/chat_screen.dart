@@ -30,10 +30,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
     // Handle messages while app is in the foreground
     FirebaseMessaging.onMessage.listen((message) {
-      print('Got a message whilst in the foreground!');
-      print('message body: ${message.notification!.body}');
-      print('message title: ${message.notification!.title}');
-
       if (message.notification != null) {
         print('Message also contained a notification: ${message.notification}');
       }
@@ -41,9 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
     // Handle messages while app is in the background by
     // clicking from a notification
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('message body: ${message.notification!.body}');
-      print('message title: ${message.notification!.title}');
-
       FirebaseMessaging.onBackgroundMessage(
           _firebaseMessagingBackgroundHandler);
     });
@@ -57,6 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text('Flutter Chat'),
         actions: [
           DropdownButton(
+            underline: Container(),
             items: [
               DropdownMenuItem(
                 child: Row(
